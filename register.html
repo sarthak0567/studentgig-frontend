@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Student Gig</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --g1:#4B6BFB;
+      --g2:#8B5CF6;
+      --muted:#64748b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Poppins,sans-serif;
+      color:#0f172a;
+      background:#f8fafc;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+    .container{
+      background:#fff;
+      width:min(90%,480px);
+      border-radius:20px;
+      box-shadow:0 10px 40px rgba(0,0,0,.08);
+      padding:32px 28px;
+      text-align:center;
+    }
+    h1{margin-bottom:16px;}
+    .step{display:none;}
+    .step.active{display:block;animation:fade .4s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    .role-cards{
+      display:grid;
+      gap:16px;
+      margin:28px 0;
+    }
+    .card{
+      border:2px solid #e2e8f0;
+      border-radius:14px;
+      padding:16px;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .card:hover{border-color:var(--g1);}
+    .card.selected{
+      border-color:transparent;
+      background:linear-gradient(135deg,var(--g1),var(--g2));
+      color:#fff;
+    }
+    .btn{
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      padding:12px 18px;
+      border-radius:12px;
+      transition:.2s;
+    }
+    .btn-google {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  font-weight: 500;
+  padding: 10px 0;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.btn-google:hover {
+  background: #f9fafb;
+  border-color: #cbd5e1;
+}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--g1),var(--g2));
+      color:#fff;
+    }
+    .btn-primary:hover{opacity:.95;transform:translateY(-1px)}
+    .input{
+      display:flex;
+      flex-direction:column;
+      text-align:left;
+      margin-bottom:12px;
+    }
+    .input label{font-size:14px;margin-bottom:4px;}
+    .input input, .input select{
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #cbd5e1;
+      font-size:15px;
+    }
+    .divider{margin:18px 0;position:relative;text-align:center;color:var(--muted);font-size:14px;}
+    .divider::before,.divider::after{
+      content:\"\";position:absolute;top:50%;width:40%;height:1px;background:#e2e8f0;
+    }
+    .divider::before{left:0}
+    .divider::after{right:0}
+    .btn-google{
+      background:#fff;
+      border:1px solid #e2e8f0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+    }
+    small{color:var(--muted)}
+    a{color:var(--g1);text-decoration:none;font-weight:500}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <h1>Join Student Gig</h1>
+      <p>Select how you want to join:</p>
+      <div class="role-cards">
+        <div class="card" data-role="client">
+          💼 I'm a Client – hiring for a project
+        </div>
+        <div class="card" data-role="freelancer">
+          🎓 I'm a Freelancer – looking for work
+        </div>
+      </div>
+      <button class="btn btn-primary" id="continueBtn" disabled>Continue</button>
+<p style="margin-top:14px">
+  <small>Already have an account? <a href="login.html">Log In</a></small>
+</p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+      <h1>Sign up to find work you love</h1>
+<button class="btn btn-google">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" 
+       width="20" height="20" alt="Google logo" 
+       style="vertical-align:middle;margin-right:8px;">
+  Continue with Google
+</button>
+      <div class="divider">or</div>
+      <form id="registerForm">
+        <div class="input">
+          <label>First name</label>
+          <input type="text" required>
+        </div>
+        <div class="input">
+          <label>Last name</label>
+          <input type="text" required>
+        </div>
+        <div class="input">
+          <label>Email</label>
+          <input type="email" required>
+        </div>
+        <div class="input">
+          <label>Password</label>
+          <input type="password" minlength="6" required>
+        </div>
+        <div class="input">
+          <label>Country</label>
+          <select required>
+            <option value=\"\">Select country</option>
+            <option>India</option><option>USA</option><option>UK</option><option>Canada</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:8px">Create Account</button>
+      </form>
+      <p style="margin-top:14px"><small>Already have an account? <a href="login.html">Log In</a></small></p>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE =
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:4000"
+    : "https://studentgig-backend.onrender.com";
+    const cards=document.querySelectorAll('.card');
+    const cont=document.getElementById('continueBtn');
+    let selectedRole=null;
+    cards.forEach(c=>c.addEventListener('click',()=>{
+      cards.forEach(x=>x.classList.remove('selected'));
+      c.classList.add('selected');
+      selectedRole=c.dataset.role;
+      cont.disabled=false;
+    }));
+    cont.addEventListener('click',()=>{
+      if(selectedRole){
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+        window.scrollTo(0,0);
+      }
+    });
+    document.getElementById('registerForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      alert(`Account created as ${selectedRole}!`);
+      window.location.href='dashboard.html';
+    });
+  </script>
+</body>
+</html>

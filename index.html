@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Student Gig</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --g1: #4B6BFB;
+      --g2: #8B5CF6;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Poppins, sans-serif;
+      color: #0f172a;
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      width: min(90%, 480px);
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.08);
+      padding: 32px 28px;
+      text-align: center;
+    }
+    h1 { margin: 0 0 16px; }
+    .btn {
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: .2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--g1), var(--g2));
+      color: #fff;
+    }
+    .btn-primary:hover {
+      opacity: .95;
+      transform: translateY(-1px);
+    }
+    .btn-google {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      font-weight: 500;
+      padding: 10px 0;
+      border-radius: 10px;
+      transition: .2s;
+    }
+    .btn-google:hover { background: #f9fafb; border-color: #cbd5e1; }
+    .divider {
+      margin: 18px 0;
+      position: relative;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #e2e8f0;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .input {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    .input label { font-size: 14px; margin-bottom: 4px; }
+    .input input {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 15px;
+    }
+    small { color: var(--muted); }
+    a { color: var(--g1); text-decoration: none; font-weight: 500; }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome back</h1>
+
+    <button class="btn btn-google" type="button">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+           width="20" height="20" alt="Google logo" style="vertical-align:middle;margin-right:8px;">
+      Continue with Google
+    </button>
+
+    <div class="divider">or</div>
+
+    <!-- ✅ FIXED INPUTS with IDs -->
+    <form id="loginForm">
+      <div class="input">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" minlength="6" required>
+      </div>
+
+      <div class="row">
+        <small><a href="#">Forgot password?</a></small>
+        <small>New here? <a href="register.html">Create account</a></small>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%">Log In</button>
+    </form>
+  </div>
+
+  <script>
+ const API_BASE =
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:4000"
+    : "https://studentgig-backend.onrender.com";
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || "Login failed");
+
+        // ✅ Save token & user
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        alert("✅ Logged in successfully!");
+        window.location.href = "dashboard.html"; // redirect to dashboard
+      } catch (err) {
+        alert("❌ " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

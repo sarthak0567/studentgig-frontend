@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Gig | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --text:#0f172a;
+      --muted:#64748b;
+      --card:#ffffff;
+      --g1:#4B6BFB;
+      --g2:#8B5CF6;
+      --primary:#4B6BFB;
+      --shadow:0 10px 30px rgba(2,6,23,.12);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Poppins,sans-serif;color:var(--text);background:#fff}
+    a{text-decoration:none;color:inherit}
+
+    /* Header */
+    .header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.2) blur(6px);background:rgba(255,255,255,.7);border-bottom:1px solid rgba(15,23,42,.06)}
+    .nav{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
+    .grow{flex:1}
+    .nav-links{display:flex;gap:24px;font-weight:500}
+    .nav-actions{display:flex;gap:10px}
+    .btn{padding:10px 16px;border-radius:12px;border:1px solid transparent;font-weight:600;cursor:pointer;transition:.2s ease;display:inline-flex;align-items:center;gap:10px}
+    .btn-ghost{background:#fff;border-color:rgba(15,23,42,.12)}
+    .btn-ghost:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+    .btn-primary{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
+    .btn-primary:hover{filter:saturate(1.05);transform:translateY(-1px);box-shadow:var(--shadow)}
+
+    /* Hero */
+    .hero{position:relative;isolation:isolate}
+    .hero-media{position:absolute;inset:0;z-index:-1;overflow:hidden;border-bottom-left-radius:28px;border-bottom-right-radius:28px}
+    .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,32,.55),rgba(255,255,255,.95) 85%,#fff 100%);}    
+    .hero-media img{width:100%;height:100%;object-fit:cover;filter:brightness(.8)}
+    .hero-inner{max-width:1200px;margin:0 auto;padding:72px 20px 48px;display:grid;gap:24px}
+    .headline{max-width:850px;color:#fff}
+    .headline h1{font-size:clamp(32px,5vw,56px);line-height:1.05;margin:0 0 12px;font-weight:700;letter-spacing:-.02em;color:#fff}
+    .headline p{margin:0;color:#e2e8f0;font-weight:400}
+    .search-wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+    .search{flex:1;min-width:260px;display:flex;align-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(15,23,42,.12);border-radius:14px;padding:8px}
+    .search i{padding:0 10px;color:var(--muted)}
+    .search input{flex:1;border:0;background:transparent;outline:none;padding:10px 6px;font-size:16px}
+    .select{position:relative}
+    .select select{appearance:none;border:0;background:transparent;padding:10px 36px 10px 12px;font-weight:600}
+    .select:after{content:"\f078";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+
+    /* Section base */
+    .section{max-width:1200px;margin:48px auto;padding:0 20px}
+    .section h2{text-align:center;font-size:28px;margin-bottom:24px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+    .card{background:var(--card);border:1px solid rgba(15,23,42,.08);border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(2,6,23,.05);text-align:center}
+    .card i{font-size:24px;margin-bottom:8px;color:var(--g1)}
+    .card p{color:var(--muted);font-size:15px;margin:6px 0 0}
+
+    /* CTA */
+    .cta{text-align:center;padding:60px 20px}
+    .cta h2{font-size:32px;margin-bottom:12px}
+    .cta p{color:var(--muted);margin-bottom:24px;font-size:16px}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(15,23,42,.06);padding:20px;text-align:center;color:var(--muted);margin-top:40px}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <nav class="nav">
+      <a class="brand" href="#"><span class="logo"><i class="fa-solid fa-graduation-cap"></i></span> Student <span style="color:var(--g1)">Gig</span></a>
+      <div class="grow"></div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#categories">Categories</a>
+        <a href="#gigs">Gigs</a>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost">Sign In</a>
+        <a href="register.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-media"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1920&auto=format&fit=crop" alt="Student freelancer"></div>
+    <div class="hero-inner">
+      <div class="headline">
+        <h1>Empowering Students with <span style="background:linear-gradient(135deg,var(--g1),var(--g2));background-clip:text;color:transparent">Real Opportunities</span></h1>
+        <p>Find gigs, internships, and freelance work to earn and grow your skills.</p>
+
+        <div class="search-wrap">
+          <div class="search"><i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="text" placeholder="Search gigs, skills, or keywords">
+            <span class="select"><select id="categoryFilter"><option>All</option><option>Development</option><option>Design</option><option>Writing</option><option>Tutoring</option><option>Marketing</option></select></span>
+          </div>
+          <button class="btn btn-primary" id="searchBtn"><i class="fa-solid fa-search"></i> Search</button>
+          <button class="btn btn-ghost"><i class="fa-solid fa-compass"></i> Find Gigs</button>
+          <button class="btn btn-ghost"><i class="fa-solid fa-bullhorn"></i> Post a Project</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR CATEGORIES -->
+  <section id="categories" class="section">
+    <h2>Popular Categories</h2>
+    <div class="grid">
+      <div class="card"><i class="fa-solid fa-code"></i><h3>Development & IT</h3><p>Web, App & Software</p></div>
+      <div class="card"><i class="fa-solid fa-pen-nib"></i><h3>Design & Creative</h3><p>UI/UX, Logos & Branding</p></div>
+      <div class="card"><i class="fa-solid fa-language"></i><h3>Writing & Translation</h3><p>Blogging & Copywriting</p></div>
+      <div class="card"><i class="fa-solid fa-chalkboard-user"></i><h3>Tutoring</h3><p>Teach & Mentor Students</p></div>
+      <div class="card"><i class="fa-solid fa-bullhorn"></i><h3>Marketing</h3><p>Social Media & Brand Growth</p></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="grid">
+      <div class="card"><i class="fa-solid fa-user-plus"></i><h3>Create an Account</h3><p>Sign up as a student freelancer or client in minutes.</p></div>
+      <div class="card"><i class="fa-solid fa-briefcase"></i><h3>Find or Post Gigs</h3><p>Browse student talent or share your project needs easily.</p></div>
+      <div class="card"><i class="fa-solid fa-coins"></i><h3>Get Paid Securely</h3><p>Collaborate and receive secure payments on completion.</p></div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE -->
+  <section class="section">
+    <h2>Why Choose Student Gig</h2>
+    <div class="grid">
+      <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Verified Clients & Students</h3><p>All profiles are verified for safety and trust.</p></div>
+      <div class="card"><i class="fa-solid fa-graduation-cap"></i><h3>For Students, By Students</h3><p>A community built to empower student freelancers globally.</p></div>
+      <div class="card"><i class="fa-solid fa-handshake"></i><h3>Skill-Based Matching</h3><p>We connect the right students with the right gigs.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Join Student Gig Today</h2>
+    <p>Start your freelancing journey now – learn, earn and grow with real-world projects.</p>
+    <a href="register.html" class="btn btn-primary">Join Now</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>© 2025 Student Gig · <a href="#">Privacy</a> · <a href="#">Terms</a></footer>
+
+  <!-- JS -->
+ <script>
+  document.getElementById('searchBtn').addEventListener('click',()=>{
+    const q = document.getElementById('searchInput').value.trim();
+    const cat = document.getElementById('categoryFilter').value;
+    const url = `gigs.html?search=${encodeURIComponent(q)}&category=${encodeURIComponent(cat)}`;
+    window.location.href = url;
+  });
+</script>
+
+</body>
+</html>
