@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard | StudentGig</title>
+
+<!-- Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --g1:#4B6BFB;
+  --g2:#8B5CF6;
+  --bg:#0b1020;
+  --card:#0f1530;
+  --card2:#131939;
+  --text:#e6e9f8;
+  --muted:#9aa3c7;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', system-ui;
+}
+html, body {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, rgba(10,15,34,0.95), rgba(12,18,48,0.95) 40%, rgba(11,16,32,0.95));
+  color: var(--text);
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 250px;
+  background: linear-gradient(180deg, var(--card), #0e1440);
+  border-right: 1px solid #202856;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 100;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: white;
+}
+.brand .logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(120% 120% at 20% 0%, #8B5CF6 0%, #4B6BFB 55%, #3348d6 100%);
+  color: #fff;
+}
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.menu li {
+  padding: 12px;
+  border-radius: 10px;
+  color: #c7cff6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.2s;
+}
+.menu li:hover {
+  background: #0f173f;
+}
+.menu li.active {
+  background: linear-gradient(135deg, #101a55, #111e66);
+  color: #fff;
+}
+.spacer { flex: 1; }
+
+/* MAIN CONTENT */
+/* --- MAIN AREA FIXED TO ORIGINAL POSITION --- */
+main {
+  margin-left: 250px;
+  min-height: 100vh;
+  position: relative;
+  background: transparent;
+  padding: 0;
+  display: block;
+}
+
+.topbar {
+  border-bottom: 1px solid #1b2454;
+  padding: 18px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #0b1020cc, #0b1020 85%);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.primary:hover {
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+}
+
+/* Content container aligned to top-left */
+.container {
+  padding: 25px 30px;
+  max-width: 1250px;
+  margin: 0 auto;
+  position: relative;
+}
+.page { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
+.page.active { display: block; opacity: 1; transform: translateY(0); }
+
+/* CARDS */
+.card {
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 1px solid #1c2555;
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 15px rgba(75, 107, 251, 0.3);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #1b2246;
+  border: 1px solid #223070;
+  color: #cbd3ff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.chip.active {
+  background: linear-gradient(135deg, #2637a2, #5a49ce);
+  color: #fff;
+}
+.chip:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(75, 107, 251, 0.3);
+}
+
+/* SEARCH */
+.searchbar {
+  margin-bottom: 10px;
+}
+.searchbar input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #223070;
+  background: #10173c;
+  color: #fff;
+  width: 280px;
+}
+
+/* GIG CARDS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+.gig {
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 1px solid #1c2555;
+  border-radius: 14px;
+  padding: 16px;
+  transition: 0.3s;
+}
+.gig:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(75, 107, 251, 0.3);
+}
+.gig h3 { margin-bottom: 6px; }
+.meta { font-size: 12px; color: #9aa3c7; margin-bottom: 10px; }
+.actions { display: flex; gap: 10px; }
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #223070;
+  background: #10173c;
+  color: #e8ecff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn.primary {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  color: #fff;
+}
+.btn.danger {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+.btn.danger {
+  background: transparent;
+  border-color: #ef4444;
+  color: #ef4444;
+  transition: all 0.3s ease;
+}
+.btn.danger:hover {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #93a0d8;
+  border-top: 1px solid #1b2454;
+}
+/* === POLISH: Gradient Headings & Divider Glow === */
+h2, h3 {
+  background: linear-gradient(135deg, #4B6BFB, #8B5CF6);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+footer {
+  border-top: 1px solid rgba(75,107,251,0.4);
+  box-shadow: 0 -2px 10px rgba(75,107,251,0.2);
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: rgba(15,21,48,0.8);
+  border: 1px solid rgba(75,107,251,0.3);
+  border-radius: 14px;
+  padding: 24px;
+  width: 360px;
+  box-shadow: 0 0 25px rgba(75,107,251,0.2);
+}
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(27,34,70,0.8);
+  color: #fff;
+  outline: none;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* BACKGROUND GLOW */
+.bg-glow {
+  position: fixed;
+  top: -150px;
+  left: -150px;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(75,107,251,0.35), rgba(139,92,246,0.25), transparent 70%);
+  filter: blur(180px);
+  z-index: -10;
+  pointer-events: none;
+  animation: moveGlow 25s ease-in-out infinite alternate;
+}
+@keyframes moveGlow {
+  0% { transform: translate(-50px, -50px) scale(1); opacity: 0.6; }
+  50% { transform: translate(150px, 100px) scale(1.05); opacity: 0.9; }
+  100% { transform: translate(-100px, 150px) scale(0.95); opacity: 0.75; }
+}
+
+/* === Sidebar Modern Upgrade === */
+.sidebar {
+  transition: all 0.3s ease;
+  box-shadow: inset -1px 0 0 #1b2454;
+}
+
+.menu li {
+  position: relative;
+  transition: 0.25s ease;
+}
+
+.menu li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(180deg, var(--g1), var(--g2));
+  border-radius: 0 3px 3px 0;
+  transform: scaleY(0);
+  transition: transform 0.25s ease;
+}
+
+.menu li.active::before {
+  transform: scaleY(1);
+}
+
+.menu li:hover {
+  transform: translateX(5px);
+  color: #fff;
+  background: linear-gradient(135deg, rgba(75,107,251,0.15), rgba(139,92,246,0.15));
+}
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #ff5c5c;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.close-btn:hover {
+  color: #ff0000;
+  transform: scale(1.2);
+}
+.gig {
+  position: relative; /* required so close-btn stays inside */
+}
+/* === SMOOTH ANIMATIONS === */
+
+/* Page Transitions */
+.page {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.page.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gig Hover Animation */
+.gig {
+  transition: all 0.3s ease;
+}
+.gig:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 15px rgba(75, 107, 251, 0.4);
+}
+
+/* Button Click Feedback */
+.btn:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+  transition: all 0.1s ease;
+}
+
+/* Modal Fade In Animation */
+.modal {
+  animation: fadeIn 0.3s ease;
+}
+.modal-content {
+  animation: scaleUp 0.35s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; } 
+  to { opacity: 1; }
+}
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; } 
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Sidebar Hover Glow */
+.sidebar {
+  transition: background 0.4s ease;
+}
+.sidebar:hover {
+  background: linear-gradient(180deg, #0f1535, #0c1340);
+}
+/* === POLISH: Smooth Card & Button Effects === */
+.card, .gig, .btn {
+  transition: all 0.25s ease;
+}
+
+.card:hover, .gig:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(75,107,251,0.35);
+}
+
+.btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(139,92,246,0.6);
+}
+
+.btn.save:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+  box-shadow: 0 0 8px rgba(34,197,94,0.6);
+}
+
+</style>
+</head>
+<body>
+<div id="toast" style="
+  position: fixed; bottom: 25px; right: 25px;
+  background: linear-gradient(135deg,#4B6BFB,#8B5CF6);
+  color: white; padding: 12px 18px;
+  border-radius: 10px; opacity: 0; transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 0 15px rgba(75,107,251,0.4);
+">Gig posted successfully 🎉</div>
+
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"
+     style="position:fixed; top:200px; left:400px; width:700px; height:700px; animation-delay:8s;"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
+    Student<span style="color:#7fa2ff">&nbsp;Gig</span>
+  </div>
+
+  <ul class="menu" id="menu">
+    <li class="active" data-page="home"><i class="fa-solid fa-house"></i>Dashboard</li>
+    <li data-page="gigs"><i class="fa-solid fa-briefcase"></i>Gigs</li>
+    <li data-page="applied"><i class="fa-solid fa-paper-plane"></i>Applied</li>
+    <li data-page="saved"><i class="fa-solid fa-heart"></i>Saved</li>
+    <li data-page="messages"><i class="fa-solid fa-message"></i>Messages</li>
+    <li data-page="profile"><i class="fa-solid fa-user"></i>Profile</li>
+  </ul>
+  <div class="spacer"></div>
+  <ul class="menu">
+    <li id="logout"><i class="fa-solid fa-right-from-bracket"></i>Logout</li>
+  </ul>
+</aside>
+
+<!-- MAIN -->
+<main>
+  <div class="topbar">
+  <h1 id="greetingText">Welcome back, 
+    <span style="background:linear-gradient(135deg,var(--g1),var(--g2));
+                 background-clip:text;color:transparent;font-weight:600;">
+      Sarthak
+    </span> 👋
+  </h1>
+  <button class="primary" id="postGigBtn">+ Post a Gig</button>
+</div>
+
+  <div class="container">
+    <section id="home" class="page active">
+      <div class="stats">
+        <div class="card"><h3 id="kpiApplied">0</h3><p>Applied Gigs</p></div>
+        <div class="card"><h3 id="kpiSaved">0</h3><p>Saved Gigs</p></div>
+      </div>
+      <h3>Recommended Gigs</h3>
+      <div class="grid" id="homeRecs"></div>
+    </section>
+
+    <section id="gigs" class="page">
+      <div class="filters" id="filters"></div>
+      <div class="searchbar"><input id="search" placeholder="Search gigs..." /></div>
+      <div id="countInfo"></div>
+      <div class="grid" id="gigGrid"></div>
+    </section>
+
+    <section id="applied" class="page">
+      <h2>Applied Gigs</h2>
+      <div class="grid" id="appliedGrid"></div>
+    </section>
+
+    <section id="saved" class="page">
+      <h2>Saved Gigs</h2>
+      <div class="grid" id="savedGrid"></div>
+    </section>
+
+    <section id="messages" class="page">
+      <h2>Messages</h2>
+      <div class="card"><p>💬 Chat with clients coming soon!</p></div>
+    </section>
+
+    <section id="profile" class="page">
+      <h2>Your Profile</h2>
+      <div class="card"><p><b>Name:</b> Sarthak Singh</p><p><b>Email:</b> sarthak@example.com</p></div>
+    </section>
+  </div>
+
+  <footer>© 2025 Student Gig · Privacy · Terms</footer>
+</main>
+
+<!-- MODAL -->
+<div id="gigModal" class="modal">
+  <div class="modal-content">
+    <h3>Post a New Gig</h3>
+    <form id="gigForm">
+      <input name="title" placeholder="Title" required>
+      <input name="category" placeholder="Category" required>
+      <input name="price" placeholder="Price (₹500)" required>
+      <input name="duration" placeholder="Duration (2 days)" required>
+      <textarea name="description" placeholder="Description..." required></textarea>
+      <div class="modal-actions">
+        <button type="button" id="closeModal" class="btn">Cancel</button>
+        <button type="submit" class="btn primary">Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+
+// === GLOBAL API CONFIG ===
+const API_BASE =
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:4000"
+    : "https://studentgig-backend.onrender.com";
+
+// === TOKEN + USER CHECK ===
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+if (!token) {
+  alert("⚠️ Please log in first!");
+  window.location.href = "login.html";
+  return;
+} else {
+  console.log("✅ Logged in as:", user.email || "Unknown user");
+}
+
+// === API FETCH WRAPPER ===
+async function apiFetch(path, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+    ...options.headers,
+  };
+
+  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+
+  if (res.status === 401) {
+    alert("⚠️ Session expired. Please log in again.");
+    localStorage.clear();
+    window.location.href = "login.html";
+  }
+
+  return res;
+}
+
+// === UTILITIES ===
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const LS_APPLIED="sg_applied", LS_SAVED="sg_saved";
+const getApplied=()=>JSON.parse(localStorage.getItem(LS_APPLIED)||"[]");
+const getSaved=()=>JSON.parse(localStorage.getItem(LS_SAVED)||"[]");
+const setApplied=v=>localStorage.setItem(LS_APPLIED,JSON.stringify(v));
+const setSaved=v=>localStorage.setItem(LS_SAVED,JSON.stringify(v));
+
+// === LOAD GIGS ===
+let gigsData=[];
+const categories=["All","Tech","Design","Writing","Tutoring","Marketing","Creative","Media","Misc"];
+
+async function loadGigs() {
+  try {
+    const res = await apiFetch("/api/gigs");
+    const data = await res.json();
+    gigsData = Array.isArray(data) && data.length ? data : [];
+  } catch (err) {
+    console.warn("⚠️ Backend not reachable, using fallback gigs:", err);
+    gigsData = [
+      { id: 1, title: "Logo Design for Student Club", category: "Design", price: "₹500", duration: "2 days", description: "Create a sleek logo for the student coding club." },
+      { id: 2, title: "Frontend Web Fix", category: "Tech", price: "₹800", duration: "1 day", description: "Help fix CSS layout and responsiveness for a project." },
+      { id: 3, title: "Python Tutoring Session", category: "Tutoring", price: "₹600", duration: "2 days", description: "Teach Python basics to juniors via Google Meet." },
+      { id: 4, title: "Social Media Design", category: "Marketing", price: "₹400", duration: "1 day", description: "Create creative posts for college fest social handles." }
+    ];
+  }
+  renderGigs("All", "");
+}
+
+const rnd=arr=>arr[Math.floor(Math.random()*arr.length)];
+const badges=["new","hot","pro"];
+const clients=["TechHub","Designify","SkillUp","EduMark","CodeGen"];
+
+function gigCard(g) {
+  const badge = rnd(badges);
+  const client = rnd(clients);
+  return `
+  <div class="gig" data-id="${g.id}">
+    <button class="close-btn" data-id="${g.id}" title="Remove gig">×</button>
+    <div class="meta">@${client.toLowerCase()} • <span class="cat">${g.category||"General"}</span></div>
+    <h3>${g.title||"Untitled Gig"}</h3>
+    <div class="meta">${g.price||"₹—"} • ${g.duration||"-"}</div>
+    <p class="muted">${g.description||"No description provided."}</p>
+    <div class="actions">
+      <button class="btn primary apply" data-id="${g.id}">Apply</button>
+      <button class="btn save" data-id="${g.id}">Save</button>
+    </div>
+  </div>`;
+}
+
+function renderGigs(category="All",search=""){
+  const grid=$("#gigGrid");
+  if(!grid)return;
+  let filtered=gigsData;
+  if(category!=="All") filtered=filtered.filter(g=>g.category?.toLowerCase()===category.toLowerCase());
+  if(search.trim()) filtered=filtered.filter(g=>g.title?.toLowerCase().includes(search.toLowerCase()));
+  $("#countInfo").textContent=`${filtered.length} gig${filtered.length!==1?"s":""} found`;
+  grid.innerHTML=filtered.map(g=>gigCard(g)).join("");
+}
+
+// === FILTERS ===
+function renderFilters(){
+  const filters=$("#filters");
+  filters.innerHTML=categories.map(c=>`<div class="chip">${c}</div>`).join("");
+  const chips=$$(".chip");
+  chips[0].classList.add("active");
+  chips.forEach(chip=>{
+    chip.addEventListener("click",()=>{
+      chips.forEach(c=>c.classList.remove("active"));
+      chip.classList.add("active");
+      renderGigs(chip.textContent,$("#search").value);
+    });
+  });
+}
+
+// === PAGE NAVIGATION ===
+$("#menu").addEventListener("click", e => {
+  const li = e.target.closest("li[data-page]");
+  if (!li) return;
+  $$("#menu li").forEach(x => x.classList.remove("active"));
+  li.classList.add("active");
+  const id = li.dataset.page;
+  $$(".page").forEach(p => { p.style.display="none"; p.classList.remove("active"); });
+  const activePage = $("#" + id);
+  activePage.style.display = "block";
+  setTimeout(() => activePage.classList.add("active"), 10);
+  if (id === "applied") renderApplied();
+  if (id === "saved") renderSaved();
+});
+
+// === LOGOUT ===
+$("#logout").addEventListener("click",()=>{
+  localStorage.clear();
+  window.location.href="login.html";
+});
+
+// === GIG POST MODAL ===
+const modal=$("#gigModal");
+$("#postGigBtn").addEventListener("click",()=>{modal.style.display="flex";document.body.style.overflow="hidden";});
+$("#closeModal").addEventListener("click",()=>{modal.style.display="none";document.body.style.overflow="auto";});
+
+$("#gigForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    title: form.title.value,
+    category: form.category.value,
+    price: form.price.value,
+    duration: form.duration.value,
+    description: form.description.value
+  };
+  try {
+    const res = await fetch(`${API_BASE}/api/gigs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body: JSON.stringify(data)
+    });
+    const msg = await res.json();
+    if (!res.ok) throw new Error(msg.error || "Error posting gig");
+    alert("✅ Gig posted successfully!");
+    modal.style.display = "none";
+    form.reset();
+    await loadGigs();
+  } catch (err) {
+    console.error("❌", err);
+    alert("Error: " + err.message);
+  }
+});
+
+// === SEARCH ===
+$("#search").addEventListener("input", () =>
+  renderGigs($(".chip.active")?.textContent || "All", $("#search").value)
+);
+
+// === INIT (Improved with Smart Recommendations) ===
+function renderApplied() {
+  const grid = $("#appliedGrid");
+  const arr = getApplied();
+
+  if (!arr.length) {
+    grid.innerHTML = `<p class="muted">No applied gigs yet.</p>`;
+    return;
+  }
+
+  grid.innerHTML = arr.map(
+    g => `
+      <div class="gig" data-id="${g.id}">
+        <h3>${g.title}</h3>
+        <div class="meta">${g.price} • ${g.duration}</div>
+        <p>${g.description}</p>
+        <div class="actions">
+          <button class="btn danger remove-applied" data-id="${g.id}">
+            <i class="fa-solid fa-trash"></i> Remove
+          </button>
+        </div>
+      </div>`
+  ).join("");
+}
+
+function renderSaved() {
+  const grid = $("#savedGrid");
+  const arr = getSaved();
+
+  if (!arr.length) {
+    grid.innerHTML = `<p class="muted">No saved gigs yet.</p>`;
+    return;
+  }
+
+  grid.innerHTML = arr.map(
+    g => `
+      <div class="gig" data-id="${g.id}">
+        <h3>${g.title}</h3>
+        <div class="meta">${g.price} • ${g.duration}</div>
+        <p>${g.description}</p>
+        <div class="actions">
+          <button class="btn danger remove-saved" data-id="${g.id}">
+            <i class="fa-solid fa-trash"></i> Remove
+          </button>
+        </div>
+      </div>`
+  ).join("");
+}
+
+function renderHome() {
+  const recContainer = $("#homeRecs");
+  if (!recContainer) return;
+
+  const applied = getApplied();
+  const saved = getSaved();
+  const userInterests = [...applied, ...saved].map(g => g.category);
+
+  let recommended = [];
+
+  if (userInterests.length > 0) {
+    const freq = {};
+    userInterests.forEach(cat => (freq[cat] = (freq[cat] || 0) + 1));
+    const topCategory = Object.keys(freq).reduce((a, b) =>
+      freq[a] > freq[b] ? a : b
+    );
+
+    recommended = gigsData.filter(
+      g =>
+        g.category?.toLowerCase() === topCategory.toLowerCase() &&
+        !applied.some(a => a.id === g.id) &&
+        !saved.some(s => s.id === g.id)
+    ).slice(0, 4);
+  }
+
+  if (recommended.length === 0) recommended = gigsData.slice(0, 4);
+
+  recContainer.innerHTML = recommended.map(g => gigCard(g)).join("");
+}
+
+function updateStats() {
+  $("#kpiApplied").textContent = getApplied().length;
+  $("#kpiSaved").textContent = getSaved().length;
+}
+
+// === Click Handlers (Apply / Save / Remove + Toasts)
+document.addEventListener("click", e => {
+  const id = parseInt(e.target.dataset.id);
+  if (!id) return;
+
+  // 🗑️ REMOVE GIG FROM MAIN LIST (close button)
+  if (e.target.classList.contains("close-btn")) {
+    gigsData = gigsData.filter(g => g.id !== id);
+    renderGigs($(".chip.active")?.textContent || "All", $("#search").value);
+    showToast("❌ Gig removed from list!", "linear-gradient(135deg,#ef4444,#b91c1c)");
+    return;
+  }
+
+  // ❤️ SAVE
+  if (e.target.classList.contains("save")) {
+    const g = gigsData.find(x => x.id === id);
+    if (!g) return showToast("⚠️ Gig not found!", "linear-gradient(135deg,#f87171,#ef4444)");
+
+    const saved = getSaved();
+    if (!saved.some(x => x.id === id)) {
+      saved.push(g);
+      setSaved(saved);
+      updateStats();
+      renderSaved();
+      showToast("❤️ Saved successfully!", "linear-gradient(135deg,#ec4899,#db2777)");
+    } else {
+      showToast("⚠️ Already saved!", "linear-gradient(135deg,#f59e0b,#b45309)");
+    }
+    return;
+  }
+
+  // ✅ APPLY
+  if (e.target.classList.contains("apply")) {
+    const g = gigsData.find(x => x.id === id);
+    if (!g) return showToast("⚠️ Gig not found!", "linear-gradient(135deg,#f87171,#ef4444)");
+
+    const applied = getApplied();
+    if (!applied.some(x => x.id === id)) {
+      applied.push(g);
+      setApplied(applied);
+      updateStats();
+      renderApplied();
+      showToast("✅ Applied successfully!", "linear-gradient(135deg,#10b981,#059669)");
+    } else {
+      showToast("⚠️ Already applied!", "linear-gradient(135deg,#f59e0b,#b45309)");
+    }
+    return;
+  }
+
+  // 🗑️ REMOVE SAVED
+  if (e.target.classList.contains("remove-saved")) {
+    setSaved(getSaved().filter(x => x.id !== id));
+    renderSaved();
+    updateStats();
+    showToast("🗑️ Removed from Saved!", "linear-gradient(135deg,#ef4444,#b91c1c)");
+    return;
+  }
+
+  // 🗑️ REMOVE APPLIED
+  if (e.target.classList.contains("remove-applied")) {
+    setApplied(getApplied().filter(x => x.id !== id));
+    renderApplied();
+    updateStats();
+    showToast("🗑️ Removed from Applied!", "linear-gradient(135deg,#ef4444,#b91c1c)");
+    return;
+  }
+});
+
+// === SEARCH + FILTER + RECOMMENDATIONS INITIALIZATION
+renderFilters();
+await loadGigs();
+renderHome();
+updateStats();
+
+/* === Toast Notification Function (re-add if missing) === */
+function showToast(message, bg="linear-gradient(135deg,#4B6BFB,#8B5CF6)") {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.background = bg;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(20px)";
+  }, 2000);
+}
+
+// === Search + Filters + Home Initialization
+renderFilters();
+await loadGigs();
+renderHome();
+updateStats();
+});
+</script>
+</body>
+</html>
